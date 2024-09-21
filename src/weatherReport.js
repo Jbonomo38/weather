@@ -4,20 +4,26 @@ class WeatherReport {
         this.description = description;
         this.temp = temp;
         this.feelslike = feelslike;
+        this.humidity = humidity;
         this.precipprob = precipprob;
         this.uvindex = uvindex;
     }
 
-    // formatLocation() {
-    //     if(this.location.length) {
-    //         const formattedLocation = "";
-    //         formattedLocation += this.location.replace("[", "");
-    //         formattedLocation = formattedLocation.replace("]", "");
-    //         formattedLocation = formattedLocation.replace(" ", "");
-    //     } else {
-    //         return this.location;
-    //     }
-    // }
+    getDetails() {
+        return Object.entries(this);
+    }
+
+    getJson() {
+        return JSON.stringify({
+            location: this.location,
+            description: this.description,
+            temp: this.temp,
+            feelslike: this.feelslike,
+            humidity: this.humidity,
+            precipprob: this.precipprob,
+            uvindex: this.uvindex
+        });
+    }
 }
 
 export { WeatherReport };
