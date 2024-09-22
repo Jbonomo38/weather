@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const myAPIKey = `NJNHFJWEWXBUH2AP8G65CY3JX`;
     const weatherLocation = document.querySelector("#location-search");
     const weatherButton = document.querySelector("button");
+    const img = document.querySelector("img");
 
     async function loadScreen() {
         try {
@@ -26,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const weather = await requestWeather("New York");
             console.log(weather);
             await updateWeather(weather);
+            requestGif(weather.location, weather.description)
         } catch (error) {
             console.log(error);
         }
@@ -92,13 +94,30 @@ document.addEventListener('DOMContentLoaded', () => {
             return location;
         }
     }
+
+    async function requestGif(location, description) {
+        try {
+            const response = await fetch(
+            `https://api.giphy.com/v1/gifs/translate?api_key=jlmR09epOmI6MH0WkKkItvTTOpiug8Rx&s=${location+" "+description}`,
+            {
+              mode: "cors",
+            }
+            );
+            const responseJson = await response.json();
+            img.src = responseJson.data.images.original.url;
+        } catch(e) {
+            console.log(e);
+        }
+    }
     
     loadScreen();
     weatherButton.addEventListener("click", async function(e) {
        e.preventDefault();
        const loc = weatherLocation.value;
+       weatherLocation.value = "";
        const weatherObject = await requestWeather(loc);
        updateWeather(weatherObject);
+        requestGif(weatherObject.location, weatherObject.description);
     });
 });
 
